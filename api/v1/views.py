@@ -1,3 +1,8 @@
-from django.shortcuts import render
+from django.http import HttpRequest, JsonResponse
 
-# Create your views here.
+
+def generate(request: HttpRequest) -> JsonResponse:
+    # TODO
+    return JsonResponse({
+        "todo": True,
+    })
