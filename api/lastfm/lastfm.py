@@ -2,7 +2,7 @@ from typing import List
 
 import requests
 
-from .types import Album, Artist
+from .types import Album, Artist, Image
 
 
 class LastFM:
@@ -18,9 +18,16 @@ class LastFM:
         for album in response_json['topalbums']['album']:
             artist = Artist(**album['artist'])
 
+            images = []
+
+            for image in album['image']:
+                image['url'] = image.pop("#text")
+                images.append(Image(**image))
+
             album.pop('artist')
+            album.pop('image')
             album.pop('@attr')
 
-            albums.append(Album(artist=artist, **album))
+            albums.append(Album(artist=artist, images=images, **album))
 
         return albums
