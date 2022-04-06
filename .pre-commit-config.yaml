@@ -13,3 +13,8 @@ repos:
     rev: 'f90a549da5738e18342f496e083d60c05c618d09'
     hooks:
     -   id: flake8
+    
+    repo: https://github.com/pycqa/isort
+    rev: 5.10.1
+    hooks:
+    -   id: isort
