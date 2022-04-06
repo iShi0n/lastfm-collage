@@ -1,7 +1,7 @@
 from typing import List
 
-from api.lastfm.types.artist import Artist
-from api.lastfm.types.image import Image
+from .artist import Artist
+from .image import Image
 
 
 class Album:
