@@ -5,9 +5,9 @@ from api.lastfm.types.image import Image
 
 
 class Album:
-    def __init__(self, artist: Artist, image: List[Image], mbid: str, url: str, playcount: str, name: str) -> None:
+    def __init__(self, artist: Artist, images: List[Image], mbid: str, url: str, playcount: str, name: str) -> None:
         self.artist = artist
-        self.images = image
+        self.images = images
         self.mbid = mbid
         self.url = url
         self.playcount = int(playcount)
@@ -16,5 +16,7 @@ class Album:
     def as_dict(self) -> dict:
         return {
             "artist": self.artist.name,
-            "name": self.name
+            "name": self.name,
+            # Último item = maior qualidade.
+            "art": self.images[-1].url
         }
