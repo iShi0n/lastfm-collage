@@ -76,7 +76,7 @@ class LastFM:
             Image: Colagem montada.
         """
 
-        collage_background = Image.new('RGB', (image_width, image_height), 'white')
+        collage = Image.new('RGB', (image_width, image_height), 'white')
 
         for i, img in enumerate(images):
             if img.size != (art_width, art_height):
@@ -87,6 +87,6 @@ class LastFM:
             x = (i * art_width) % image_width
             y = line * art_height
 
-            collage_background.paste(img, (x, y))
+            collage.paste(img, (x, y))
 
-        return collage_background
+        return collage
