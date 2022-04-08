@@ -52,7 +52,7 @@ class LastFM:
         for album in albums[:limit + 1]:
             img_url = album.images[-1].url
 
-            # Pula álbuns que não tem imagem.
+            # Pula álbuns que não têm imagem.
             if not img_url:
                 continue
 
