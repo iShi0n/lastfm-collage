@@ -1,11 +1,11 @@
 from typing import List
 
 from .artist import Artist
-from .image import Image
+from .image import AlbumImage
 
 
 class Album:
-    def __init__(self, artist: Artist, images: List[Image], mbid: str, url: str, playcount: str, name: str) -> None:
+    def __init__(self, artist: Artist, images: List[AlbumImage], mbid: str, url: str, playcount: str, name: str) -> None:
         self.artist = artist
         self.images = images
         self.mbid = mbid
