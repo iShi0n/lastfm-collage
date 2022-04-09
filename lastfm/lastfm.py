@@ -11,8 +11,22 @@ class LastFM:
     def __init__(self, api_key: str) -> None:
         self.api_key = api_key
 
-    def get_top_albums(self, user: str) -> List[Album]:
-        response = requests.get(f"https://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user={user}&api_key={self.api_key}&format=json")
+    def get_top_albums(self, user: str, period: str = '1month', limit: int = 25) -> List[Album]:
+        """Busca lista de álbuns mais escutados no períodos selecionado.
+
+        Args:
+            user (str): Usuário a ser buscado.
+            period (str, optional): Período de tempo a ser buscado. Defaults to '1month'.
+            limit (int, optional): Limite de resultados. Defaults to 25.
+
+        Returns:
+            List[Album]: Lista de álbuns retornados.
+        """
+
+        # A API retorna limit - 1
+        limit += 1
+
+        response = requests.get(f"https://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user={user}&limit={limit}&period={period}&api_key={self.api_key}&format=json")
         response_json = response.json()
 
         albums = []
@@ -34,22 +48,23 @@ class LastFM:
 
         return albums
 
-    def gen_top_albums_collage(self, user: str, limit: int = 25) -> Image.Image:
+    def gen_top_albums_collage(self, user: str, period: str = '1month', limit: int = 25) -> Image.Image:
         """Gera colagem dos álbuns mais escutados.
 
         Args:
             user (str): Usuário do last.fm
+            period (str, optional): Período a ser buscado. eg. overall | 7day | 1month | 12month. Defaults to 1month. 
             limit (int, optional): Limite de álbuns. Defaults to 25.
 
         Returns:
             Image.Image: Colagem montada.
         """
 
-        albums = self.get_top_albums(user)
+        albums = self.get_top_albums(user, period, limit)
 
         imgs = []
 
-        for album in albums[:limit + 1]:
+        for album in albums:
             img_url = album.images[-1].url
 
             # Pula álbuns que não têm imagem.
