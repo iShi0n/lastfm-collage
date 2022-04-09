@@ -11,7 +11,7 @@ class LastFM:
     def __init__(self, api_key: str) -> None:
         self.api_key = api_key
 
-    def get_top_albums(self, user: str, period: str = '1month', limit: int = 25) -> List[Album]:
+    def _get_top_albums(self, user: str, period: str = '1month', limit: int = 25) -> List[Album]:
         """Busca lista de álbuns mais escutados no períodos selecionado.
 
         Args:
@@ -48,36 +48,7 @@ class LastFM:
 
         return albums
 
-    def gen_top_albums_collage(self, user: str, period: str = '1month', limit: int = 25) -> Image.Image:
-        """Gera colagem dos álbuns mais escutados.
-
-        Args:
-            user (str): Usuário do last.fm
-            period (str, optional): Período a ser buscado. eg. overall | 7day | 1month | 12month. Defaults to 1month. 
-            limit (int, optional): Limite de álbuns. Defaults to 25.
-
-        Returns:
-            Image.Image: Colagem montada.
-        """
-
-        albums = self.get_top_albums(user, period, limit)
-
-        imgs = []
-
-        for album in albums:
-            img_url = album.images[-1].url
-
-            # Pula álbuns que não têm imagem.
-            if not img_url:
-                continue
-
-            img = Image.open(io.BytesIO(requests.get(img_url).content))
-
-            imgs.append(img)
-
-        return self.gen_collage(imgs)
-
-    def gen_collage(self, images: List[Image.Image], art_width: int = 200, art_height: int = 200, image_width: int = 1000, image_height: int = 1000) -> Image.Image:
+    def _gen_collage(self, images: List[Image.Image], art_width: int = 200, art_height: int = 200, image_width: int = 1000, image_height: int = 1000) -> Image.Image:
         """Gera colagem
 
         Args:
@@ -105,3 +76,32 @@ class LastFM:
             collage.paste(img, (x, y))
 
         return collage
+
+    def gen_top_albums_collage(self, user: str, period: str = '1month', limit: int = 25) -> Image.Image:
+        """Gera colagem dos álbuns mais escutados.
+
+        Args:
+            user (str): Usuário do last.fm
+            period (str, optional): Período a ser buscado. eg. overall | 7day | 1month | 12month. Defaults to 1month. 
+            limit (int, optional): Limite de álbuns. Defaults to 25.
+
+        Returns:
+            Image.Image: Colagem montada.
+        """
+
+        albums = self._get_top_albums(user, period, limit)
+
+        imgs = []
+
+        for album in albums:
+            img_url = album.images[-1].url
+
+            # Pula álbuns que não têm imagem.
+            if not img_url:
+                continue
+
+            img = Image.open(io.BytesIO(requests.get(img_url).content))
+
+            imgs.append(img)
+
+        return self._gen_collage(imgs)
