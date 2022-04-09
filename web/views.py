@@ -21,9 +21,12 @@ class IndexView(View):
         if not all([user, period, limit]):
             # TODO: criar página de erro
             return HttpResponseBadRequest('<h1>Parâmetros inválidos</h1>')
-
-        collage = self.lastfm.gen_top_albums_collage(user, period, limit)
-        response = HttpResponse(content_type='image/png')
-        collage.save(response, 'PNG')
+        try:
+            collage = self.lastfm.gen_top_albums_collage(user, period, limit)
+            response = HttpResponse(content_type='image/png')
+            collage.save(response, 'PNG')
+        except Exception as e:
+            # TODO: criar página de erro
+            response = HttpResponse(f'<h1>{e}</h1>', status=500)
 
         return response

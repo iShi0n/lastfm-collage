@@ -19,6 +19,9 @@ class LastFM:
             period (str, optional): Período de tempo a ser buscado. Defaults to '1month'.
             limit (int, optional): Limite de resultados. Defaults to 25.
 
+        Raises:
+            Exception: Erro retornado pela API.
+
         Returns:
             List[Album]: Lista de álbuns retornados.
         """
@@ -28,6 +31,9 @@ class LastFM:
 
         response = requests.get(f"https://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user={user}&limit={limit}&period={period}&api_key={self.api_key}&format=json")
         response_json = response.json()
+
+        if 'error' in response_json.keys():
+            raise Exception(response_json['message'])
 
         albums = []
 
