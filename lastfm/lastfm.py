@@ -11,6 +11,34 @@ class LastFM:
     def __init__(self, api_key: str) -> None:
         self.api_key = api_key
 
+    def _get_top_artists(self, user: str, period: str = '1month', limit: int = 25) -> List[Artist]:
+        """Busca lista de artistas mais escutados no período selecionado.
+
+        Args:
+            user (str): Usuário a ser buscado.
+            period (str, optional): Período a ser buscado. Defaults to '1month'.
+            limit (int, optional): Limite de resultados. Defaults to 25.
+
+        Raises:
+            Exception: Erro retornado pela API.
+
+        Returns:
+            List[Artist]: Lista de artistas retornados.
+        """
+
+        response = requests.get(f'https://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user={user}&limit={limit}&period={period}&api_key={self.api_key}&format=json')
+        response_json = response.json()
+
+        if 'error' in response_json.keys():
+            raise Exception(response_json['message'])
+
+        artists = []
+
+        for artist in response_json['topartists']['artist']:
+            artists.append(Artist(url=artist['url'], name=artist['name'], mbid=artist['mbid']))
+
+        return artists
+
     def _get_top_albums(self, user: str, period: str = '1month', limit: int = 25) -> List[Album]:
         """Busca lista de álbuns mais escutados no períodos selecionado.
 
@@ -109,5 +137,23 @@ class LastFM:
             img = Image.open(io.BytesIO(requests.get(img_url).content))
 
             imgs.append(img)
+
+        return self._gen_collage(imgs)
+
+    def gen_top_artists_collage(self, user: str, period: str = '1month', limit: int = 25) -> Image.Image:
+        """Gera colagem dos artistas mais escutados.
+
+        Args:
+            user (str): Usuário do last.fm
+            period (str, optional): Período a ser buscado. eg. overall | 7day | 1month | 12month. Defaults to 1month. 
+            limit (int, optional): Limite de álbuns. Defaults to 25.
+
+        Returns:
+            Image.Image: Colagem montada.
+        """
+
+        artists = self._get_top_artists(user, period, limit)
+
+        imgs = [artist.image for artist in artists]
 
         return self._gen_collage(imgs)

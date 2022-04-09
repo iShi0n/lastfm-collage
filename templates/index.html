@@ -24,6 +24,13 @@
 
       main {
         text-align: center;
+        user-select: none;
+      }
+
+      main .options {
+        display: flex;
+        justify-content: center;
+        text-align: left;
       }
     </style>
   </head>
@@ -41,44 +48,72 @@
             required
             autofocus
           />
-
-          <div class="period-options my-2">
-            <div class="form-check form-check-inline">
-              <label class="form-check-label">
-                <input
-                  class="form-check-input"
-                  type="radio"
-                  name="period"
-                  id="period-1month"
-                  value="1month"
-                  checked
-                />
-                1 mês
-              </label>
+          <div class="options">
+            <div class="period-options my-2 mx-3">
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="period"
+                    id="period-1month"
+                    value="1month"
+                    checked
+                  />
+                  1 mês
+                </label>
+              </div>
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="period"
+                    id="period-6month"
+                    value="6month"
+                  />
+                  6 meses
+                </label>
+              </div>
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="period"
+                    id="period-12month"
+                    value="12month"
+                  />
+                  12 meses
+                </label>
+              </div>
             </div>
-            <div class="form-check form-check-inline">
-              <label class="form-check-label">
-                <input
-                  class="form-check-input"
-                  type="radio"
-                  name="period"
-                  id="period-6month"
-                  value="6month"
-                />
-                6 meses
-              </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <label class="form-check-label">
-                <input
-                  class="form-check-input"
-                  type="radio"
-                  name="period"
-                  id="period-12month"
-                  value="12month"
-                />
-                12 meses
-              </label>
+            <div class="type-options my-2 mx-3">
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="category"
+                    id="category-album"
+                    value="album"
+                    checked
+                  />
+                  Álbum
+                </label>
+              </div>
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="category"
+                    id="category-artist"
+                    value="artist"
+                  />
+                  Artista
+                </label>
+              </div>
             </div>
           </div>
         </div>

@@ -14,19 +14,27 @@ class IndexView(View):
 
     def post(self, request: HttpRequest) -> HttpResponse:
         user = request.POST.get('user')
-        period = request.POST.get('period')
+        category = request.POST.get('category', '').lower()
+        period = request.POST.get('period', '').lower()
         # TODO: adicionar limit no front
         limit = request.POST.get('limit', 26)
 
-        if not all([user, period, limit]):
+        if not all([user, category, period, limit]):
             # TODO: criar página de erro
-            return HttpResponseBadRequest('<h1>Parâmetros inválidos</h1>')
+            return HttpResponse('<h1>Parâmetros inválidos</h1>', status=422)
+
         try:
-            collage = self.lastfm.gen_top_albums_collage(user, period, limit)
+            if category == 'album':
+                collage = self.lastfm.gen_top_albums_collage(user, period, limit)
+            elif category == 'artist':
+                collage = self.lastfm.gen_top_artists_collage(user, period, limit)
+            else:
+                return HttpResponse('<h1>Parâmetros inválidos</h1>', status=422)
+
             response = HttpResponse(content_type='image/png')
             collage.save(response, 'PNG')
+
+            return response
         except Exception as e:
             # TODO: criar página de erro
-            response = HttpResponse(f'<h1>{e}</h1>', status=500)
-
-        return response
+            return HttpResponse(f'<h1>{e}</h1>', status=500)
