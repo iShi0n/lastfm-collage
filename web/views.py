@@ -13,7 +13,7 @@ class IndexView(View):
         return render(request, 'index.html')
 
     def post(self, request: HttpRequest) -> HttpResponse:
-        user = request.POST.get('user', '')
+        user = request.POST.get('user')
 
         if not user:
             # TODO: criar página de erro
