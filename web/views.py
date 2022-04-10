@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.http import HttpRequest, HttpResponse, HttpResponseBadRequest
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.views import View
 
@@ -28,6 +28,8 @@ class IndexView(View):
                 collage = self.lastfm.gen_top_albums_collage(user, period, limit)
             elif category == 'artist':
                 collage = self.lastfm.gen_top_artists_collage(user, period, limit)
+            elif category == 'track':
+                collage = self.lastfm.gen_top_tracks_collage(user, period, limit)
             else:
                 return HttpResponse('<h1>Parâmetros inválidos</h1>', status=422)
 
