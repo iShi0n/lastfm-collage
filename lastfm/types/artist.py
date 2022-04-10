@@ -10,7 +10,14 @@ class Artist:
         self.url = url
         self.name = name
         self.mbid = mbid
-        self.image = self._get_image()
+        self._image = None
+
+    @property
+    def image(self) -> Image.Image:
+        if not self._image:
+            self._image = self._get_image()
+
+        return self._image
 
     def _get_image(self) -> Image.Image:
         """
