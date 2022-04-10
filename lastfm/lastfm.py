@@ -11,7 +11,7 @@ class LastFM:
     def __init__(self, api_key: str) -> None:
         self.api_key = api_key
 
-    def _get_top_tracks(self, user: str, period: str = '1month', limit: int = 25) -> List[Track]:
+    def _get_top_tracks(self, user: str, period: str = '1month', limit: int = 50) -> List[Track]:
         response = requests.get(f'https://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user={user}&limit={limit}&period={period}&api_key={self.api_key}&format=json')
         response_json = response.json()
 
@@ -34,13 +34,13 @@ class LastFM:
 
         return tracks
 
-    def _get_top_artists(self, user: str, period: str = '1month', limit: int = 25) -> List[Artist]:
+    def _get_top_artists(self, user: str, period: str = '1month', limit: int = 50) -> List[Artist]:
         """Busca lista de artistas mais escutados no período selecionado.
 
         Args:
             user (str): Usuário a ser buscado.
             period (str, optional): Período a ser buscado. Defaults to '1month'.
-            limit (int, optional): Limite de resultados. Defaults to 25.
+            limit (int, optional): Limite de resultados. Defaults to 50.
 
         Raises:
             Exception: Erro retornado pela API.
@@ -62,13 +62,13 @@ class LastFM:
 
         return artists
 
-    def _get_top_albums(self, user: str, period: str = '1month', limit: int = 25) -> List[Album]:
+    def _get_top_albums(self, user: str, period: str = '1month', limit: int = 50) -> List[Album]:
         """Busca lista de álbuns mais escutados no períodos selecionado.
 
         Args:
             user (str): Usuário a ser buscado.
             period (str, optional): Período de tempo a ser buscado. Defaults to '1month'.
-            limit (int, optional): Limite de resultados. Defaults to 25.
+            limit (int, optional): Limite de resultados. Defaults to 50.
 
         Raises:
             Exception: Erro retornado pela API.
@@ -131,13 +131,13 @@ class LastFM:
 
         return collage
 
-    def gen_top_albums_collage(self, user: str, period: str = '1month', limit: int = 25) -> Image.Image:
+    def gen_top_albums_collage(self, user: str, period: str = '1month', limit: int = 50) -> Image.Image:
         """Gera colagem dos álbuns mais escutados.
 
         Args:
             user (str): Usuário do last.fm
             period (str, optional): Período a ser buscado. eg. overall | 7day | 1month | 12month. Defaults to 1month.
-            limit (int, optional): Limite de álbuns. Defaults to 25.
+            limit (int, optional): Limite de álbuns. Defaults to 50.
 
         Returns:
             Image.Image: Colagem montada.
@@ -160,13 +160,13 @@ class LastFM:
 
         return self._gen_collage(imgs)
 
-    def gen_top_artists_collage(self, user: str, period: str = '1month', limit: int = 25) -> Image.Image:
+    def gen_top_artists_collage(self, user: str, period: str = '1month', limit: int = 50) -> Image.Image:
         """Gera colagem dos artistas mais escutados.
 
         Args:
             user (str): Usuário do last.fm
             period (str, optional): Período a ser buscado. eg. overall | 7day | 1month | 12month. Defaults to 1month.
-            limit (int, optional): Limite de álbuns. Defaults to 25.
+            limit (int, optional): Limite de álbuns. Defaults to 50.
 
         Returns:
             Image.Image: Colagem montada.
@@ -178,13 +178,13 @@ class LastFM:
 
         return self._gen_collage(imgs)
 
-    def gen_top_tracks_collage(self, user: str, period: str = '1month', limit: int = 25) -> Image.Image:
+    def gen_top_tracks_collage(self, user: str, period: str = '1month', limit: int = 50) -> Image.Image:
         """Gera colagem das músicas mais escutados.
 
         Args:
             user (str): Usuário do last.fm
             period (str, optional): Período a ser buscado. eg. overall | 7day | 1month | 12month. Defaults to 1month.
-            limit (int, optional): Limite de músicas. Defaults to 25.
+            limit (int, optional): Limite de músicas. Defaults to 50.
 
         Returns:
             Image.Image: Colagem montada.
