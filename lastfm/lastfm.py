@@ -77,9 +77,6 @@ class LastFM:
             List[Album]: Lista de álbuns retornados.
         """
 
-        # A API retorna limit - 1
-        limit += 1
-
         response = requests.get(f"https://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user={user}&limit={limit}&period={period}&api_key={self.api_key}&format=json")
         response_json = response.json()
 

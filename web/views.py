@@ -17,7 +17,7 @@ class IndexView(View):
         category = request.POST.get('category', '').lower()
         period = request.POST.get('period', '').lower()
         # TODO: adicionar limit no front
-        limit = request.POST.get('limit', 26)
+        limit = request.POST.get('limit', 25)
 
         if not all([user, category, period, limit]):
             # TODO: criar página de erro
