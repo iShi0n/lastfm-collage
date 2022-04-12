@@ -183,7 +183,8 @@ class LastFM:
             if len(imgs) == limit:
                 break
 
-            imgs.append(artist.image)
+            if image := artist.image:
+                imgs.append(image)
 
         return self._gen_collage(imgs, **kwargs)
 

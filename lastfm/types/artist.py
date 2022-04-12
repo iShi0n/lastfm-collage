@@ -20,18 +20,23 @@ class Artist:
         return self._image
 
     def _get_image(self) -> Image.Image:
-        """
-        Busca imagem do artista no site do last.fm (a API não retorna imagem de artistas).
+        """Busca imagem do artista no site do last.fm (a API não retorna imagem de artistas).
+
+        Returns:
+            Image.Image: Imagem encontrada.
         """
 
         response = requests.get(self.url + '/+images')
         found = re.search('https://lastfm.freetls.fastly.net/i/u/avatar170s/.*?(?=\")', response.text)
 
-        # Altera a URL para conseguir uma imagem com a resolução maior.
-        image_url = found.group().replace('avatar170s', '770x0')
-        image_content = requests.get(image_url).content
+        if found:
+            # Altera a URL para conseguir uma imagem com a resolução maior.
+            image_url = found.group().replace('avatar170s', '770x0')
+            image_content = requests.get(image_url).content
 
-        return Image.open(io.BytesIO(image_content))
+            return Image.open(io.BytesIO(image_content))
+
+        return
 
     def as_dict(self) -> dict:
         return {
