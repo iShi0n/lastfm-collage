@@ -1,9 +1,11 @@
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.views import View
 
 from lastfm import LastFM
+from web.models import Size
 
 
 class IndexView(View):
@@ -16,22 +18,29 @@ class IndexView(View):
         user = request.POST.get('user')
         category = request.POST.get('category', '').lower()
         period = request.POST.get('period', '').lower()
-        # TODO: adicionar limit no front
-        limit = request.POST.get('limit', 50)
+        size_name = request.POST.get('size', '5x5')
 
-        if not all([user, category, period, limit]):
+        if not all([user, category, period, size_name]):
             # TODO: criar página de erro
             return HttpResponse('<h1>Parâmetros inválidos</h1>', status=422)
 
         try:
-            if category == 'album':
-                collage = self.lastfm.gen_top_albums_collage(user, period, limit)
-            elif category == 'artist':
-                collage = self.lastfm.gen_top_artists_collage(user, period, limit)
-            elif category == 'track':
-                collage = self.lastfm.gen_top_tracks_collage(user, period, limit)
-            else:
-                return HttpResponse('<h1>Parâmetros inválidos</h1>', status=422)
+            size = Size.objects.get(size=size_name)
+        except ObjectDoesNotExist:
+            return HttpResponse('<h1>Tamanho inválido</h1>', status=422)
+
+        options = {
+            'album': self.lastfm.gen_top_albums_collage,
+            'artist': self.lastfm.gen_top_artists_collage,
+            'track': self.lastfm.gen_top_tracks_collage
+        }
+
+        if category not in options.keys():
+            return HttpResponse('<h1>Categoria inválida</h1>', status=422)
+
+        try:
+            category_function = options[category]
+            collage = category_function(user, period, size.items, art_width=size.art_width, art_height=size.art_height, collage_width=size.collage_width, collage_height=size.collage_height)
 
             response = HttpResponse(content_type='image/png')
             collage.save(response, 'PNG')
