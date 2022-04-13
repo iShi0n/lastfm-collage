@@ -12,7 +12,10 @@ class IndexView(View):
     lastfm = LastFM(settings.LASTFM_API_KEY)
 
     def get(self, request: HttpRequest) -> HttpResponse:
-        return render(request, 'index.html')
+        sizes = Size.objects.order_by('items').all()
+        sizes = [size.size for size in sizes]
+
+        return render(request, 'index.html', context={'sizes': sizes})
 
     def post(self, request: HttpRequest) -> HttpResponse:
         user = request.POST.get('user')
