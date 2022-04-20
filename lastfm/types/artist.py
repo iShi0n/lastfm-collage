@@ -31,7 +31,7 @@ class Artist:
 
         if found:
             # Altera a URL para conseguir uma imagem com a resolução maior.
-            image_url = found.group().replace('avatar170s', '770x0')
+            image_url = found.group().replace('avatar170s', '770x0') + '.jpg'
             image_content = requests.get(image_url).content
 
             return Image.open(io.BytesIO(image_content))
