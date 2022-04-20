@@ -6,8 +6,8 @@ class Size(models.Model):
     items = models.IntegerField(default=25)
     collage_width = models.IntegerField(default=1000)
     collage_height = models.IntegerField(default=1000)
-    art_width = models.FloatField(default=200)
-    art_height = models.FloatField(default=200)
+    art_width = models.IntegerField(default=200)
+    art_height = models.IntegerField(default=200)
 
     def __str__(self) -> str:
         return self.size
