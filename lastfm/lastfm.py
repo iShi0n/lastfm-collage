@@ -1,4 +1,3 @@
-import io
 from typing import List
 
 import requests
@@ -151,15 +150,13 @@ class LastFM:
             if len(imgs) == limit:
                 break
 
-            img_url = album.images[-1].url
+            image = album.image
 
             # Pula álbuns que não têm imagem.
-            if not img_url:
+            if not image:
                 continue
 
-            img = Image.open(io.BytesIO(requests.get(img_url).content))
-
-            imgs.append(img)
+            imgs.append(image)
 
         return self._gen_collage(imgs, **kwargs)
 

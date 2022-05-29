@@ -2,7 +2,7 @@ import io
 import re
 
 import requests
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFont
 
 
 class Artist:
@@ -16,6 +16,9 @@ class Artist:
     def image(self) -> Image.Image:
         if not self._image:
             self._image = self._get_image()
+            self._image = self._image.resize((200, 200))
+            font = ImageFont.truetype('framd.ttf', 12)
+            ImageDraw.Draw(self._image).text((2, 2), self.name, font=font, stroke_fill=(0, 0, 0), stroke_width=1)
 
         return self._image
 
